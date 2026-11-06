@@ -264,9 +264,7 @@ void Communications::init()
 
     uint8_t layerIndex = p.data[0];
    // DBG_PRINTF_TRACE("Received LAYER_KEYMAP_COLORS from %i %i ", p.header.device, layerIndex);
-    if (layerIndex < LEDManagement::layers.size()) {
-      LEDManagement::layers.emplace_back();
-    }
+    // Existing layer maps are RAM updates, not requests to allocate a new layer.
     union PaletteJoiner {
       struct {
         uint8_t firstColor : 4;
@@ -298,9 +296,7 @@ void Communications::init()
 
     uint8_t layerIndex = p.data[0];
     //DBG_PRINTF_TRACE("Received LAYER_UNDERGLOW_COLORS from %i %i", p.header.device, layerIndex);
-    if (layerIndex < LEDManagement::layers.size()) {
-      LEDManagement::layers.emplace_back();
-    }
+    // Existing layer maps are RAM updates, not requests to allocate a new layer.
     union PaletteJoiner {
       struct {
         uint8_t firstColor : 4;

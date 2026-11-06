@@ -37,6 +37,9 @@ class Communications {
   bool isWiredRightAlive();
 
   bool sendPacket(Packet data);
+  // Application overlays suppress competing output before it enters a queue.
+  using PacketFilter = bool (*)(const Packet &);
+  void setPacketFilter(PacketFilter filter) { packet_filter_ = filter; }
   bool sendPacketHostConnection( void );
 
   void get_keyscanner_configuration();
@@ -46,6 +49,8 @@ class Communications {
    bool is_host_connected();
 
   BindingCallbacks<Commands, Packet> callbacks{};
+ private:
+  PacketFilter packet_filter_ = nullptr;
 };
 
 extern Communications Communications;

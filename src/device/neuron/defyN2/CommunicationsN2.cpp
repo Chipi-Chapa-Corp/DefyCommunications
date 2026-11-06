@@ -625,6 +625,8 @@ bool Communications::isWiredRightAlive()
 
 bool Communications::sendPacket(Packet packet)
 {
+    // Consume suppressed overlay competitors without adding them to any queue.
+    if (packet_filter_ && !packet_filter_(packet)) return true;
     bool result = false;
 
     /* We route the packet both comN2Side modules. They will decide if they send the packet or not.
