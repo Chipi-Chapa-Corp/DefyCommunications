@@ -37,6 +37,9 @@ class Communications {
   bool isWiredRightAlive();
 
   bool sendPacket(Packet data);
+  // Select LEFT/RIGHT with KEYSCANNER_DEFY_LEFT/RIGHT. Returns the live wired,
+  // RF or BLE destination, or UNKNOWN when there is no active transport.
+  Devices connectedSideDevice(Devices side);
   // Application overlays suppress competing output before it enters a queue.
   using PacketFilter = bool (*)(const Packet &);
   void setPacketFilter(PacketFilter filter) { packet_filter_ = filter; }

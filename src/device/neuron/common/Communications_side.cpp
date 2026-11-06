@@ -363,6 +363,13 @@ bool ComSide::is_disconnected( void )
     return ( state == SIDE_STATE_DISCONNECTED ) ? true : false;
 }
 
+Devices ComSide::connectedDevice( void )
+{
+    // Use the transport that actually accepts packets, not a separate cache
+    // maintained by application CONNECTED/DISCONNECTED callbacks.
+    return is_connected() ? p_com_model->dev_side_get() : UNKNOWN;
+}
+
 bool ComSide::sendPacket( Packet &packet )
 {
     /*
