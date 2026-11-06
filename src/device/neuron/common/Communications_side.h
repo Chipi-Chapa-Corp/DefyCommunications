@@ -35,7 +35,6 @@ class ComSide
 
         bool is_connected( void );
         bool is_disconnected( void );
-        Devices connectedDevice( void );
 
         bool sendPacket(Packet &packet);
 

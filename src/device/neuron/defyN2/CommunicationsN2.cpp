@@ -623,20 +623,6 @@ bool Communications::isWiredRightAlive()
   return comN2SideRight.spi_is_connected();
 }
 
-Devices Communications::connectedSideDevice(Devices side)
-{
-    if (side != KEYSCANNER_DEFY_LEFT && side != KEYSCANNER_DEFY_RIGHT) return UNKNOWN;
-    Devices own = side == KEYSCANNER_DEFY_LEFT ? comN2SideLeft.connectedDevice()
-                                              : comN2SideRight.connectedDevice();
-    if (own != UNKNOWN) return own;
-    // A BLE model can forward traffic for either half over its one SPI link.
-    Devices peer = side == KEYSCANNER_DEFY_LEFT ? comN2SideRight.connectedDevice()
-                                               : comN2SideLeft.connectedDevice();
-    if (peer == BLE_DEFY_LEFT || peer == BLE_DEFY_RIGHT)
-        return side == KEYSCANNER_DEFY_LEFT ? BLE_DEFY_LEFT : BLE_DEFY_RIGHT;
-    return UNKNOWN;
-}
-
 bool Communications::sendPacket(Packet packet)
 {
     // Consume suppressed overlay competitors without adding them to any queue.

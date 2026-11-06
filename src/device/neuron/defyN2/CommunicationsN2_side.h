@@ -43,7 +43,6 @@ class ComN2Side
 
 //        bool readPacket(Packet &packet);      /* NOTE: Packets are distributed via the Communications.callbacks.call from within the Side module */
         bool sendPacket(Packet &packet);
-        Devices connectedDevice() { return com_side.connectedDevice(); }
 
         void run(void);
 

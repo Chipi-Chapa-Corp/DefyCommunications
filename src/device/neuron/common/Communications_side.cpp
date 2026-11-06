@@ -249,6 +249,17 @@ inline void ComSide::state_connected_process( void )
         return;
     }
 
+    // A wired peer can forward a secondary radio disconnect under its wired
+    // device ID. It cannot declare the live wired transport disconnected.
+    // The local state machine emits that event when the actual link goes down.
+    const Devices peer = p_com_model->dev_side_get();
+    if( packet_read.header.command == DISCONNECTED &&
+        packet_read.header.device == peer &&
+        ( peer == KEYSCANNER_DEFY_LEFT || peer == KEYSCANNER_DEFY_RIGHT ) )
+    {
+        return;
+    }
+
     /* Process the incoming packet to the system */
     Communications.callbacks.call( packet_read.header.command, packet_read );
 }
@@ -361,13 +372,6 @@ bool ComSide::is_connected( void )
 bool ComSide::is_disconnected( void )
 {
     return ( state == SIDE_STATE_DISCONNECTED ) ? true : false;
-}
-
-Devices ComSide::connectedDevice( void )
-{
-    // Use the transport that actually accepts packets, not a separate cache
-    // maintained by application CONNECTED/DISCONNECTED callbacks.
-    return is_connected() ? p_com_model->dev_side_get() : UNKNOWN;
 }
 
 bool ComSide::sendPacket( Packet &packet )
